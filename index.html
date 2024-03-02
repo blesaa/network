@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Schedule</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .schedule {
+      margin-top: 20px;
+    }
+    .day-card {
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(to bottom right, #4CAF50, #2196F3);
+      border: 1px solid #ddd;
+      overflow: hidden;
+    }
+    .day-card .card-body {
+      padding: 20px;
+    }
+    .day-card h5 {
+      margin-bottom: 15px;
+      text-align: center;
+      font-size: 1.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    .lesson {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .lesson p {
+      margin: 0;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">خــشتـــەی وانــــەکانی هـــەفتــــە</h1>
+    <div id="schedule" class="schedule row">
+      <!-- Schedule will be dynamically generated here -->
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Data for the schedule
+    const scheduleData = [
+      { day: "یەک شەممە", lessons: [
+        { time: "3:00 AM", classroom: "Holl D4", teacher: "بەندی", lessonName: "ئاین" },
+        { time: "4:00 AM", classroom: "Holl 4D", teacher: "ڤانە", lessonName: "فیزیا" },
+        { time: "5:00 AM", classroom: "Holl D4", teacher: "شەنیا", lessonName: "کـوردی" },
+        { time: "6:00 PM", classroom: "Holl D4", teacher: "بورهان", lessonName: "بیرکاری" },
+        { time: "7:00 PM", classroom: "Lab 5", teacher: "کاروان", lessonName: "Linux" }
+      ]},
+      { day: "دوو شەممە", lessons: [
+        { time: "3:00 AM", classroom: "Lab 5", teacher: "کاروان", lessonName: "Linux" },
+        { time: "4:00 AM", classroom: "Holl D4", teacher: "شەنیا", lessonName: "کوردی" },
+        { time: "5:00 AM", classroom: "Holl D4", teacher: "ئەمیر", lessonName: "Workstation" },
+        { time: "6:00 PM", classroom: "Lab 4", teacher: "شەنیان", lessonName: "VBA" },
+        { time: "7:00 PM", classroom: "Holl D4", teacher: "دلڤین", lessonName: "عەرەبی" }
+      ]},
+      { day: "سێ شەمە", lessons: [
+        { time: "3:00 AM", classroom: "Holl D4", teacher: "شادی", lessonName: "English" },
+        { time: "4:00 AM", classroom: "Lab 6", teacher: "شانیان", lessonName: "VBA" },
+        { time: "5:00 AM", classroom: "Holl D4", teacher: "بورهان", lessonName: "بیرکاری" },
+        { time: "6:00 PM", classroom: "Holl D4", teacher: "جووتیار", lessonName: "CCNA" },
+        { time: "7:00 PM", classroom: "Lab 4", teacher: "ئەمیر", lessonName: "Workstation" }
+      ]},
+      { day: "چوار شەممە", lessons: [
+        { time: "3:00 AM", classroom: "Lab 5", teacher: "شانیان", lessonName: "VBA" },
+        { time: "4:00 AM", classroom: "Lab 4", teacher: "جووتیار", lessonName: "CCNA" },
+        { time: "5:00 AM", classroom: "Lab 6", teacher: "شەیما", lessonName: "HTML" },
+        { time: "6:00 PM", classroom: "Lab S", teacher: "ئەمیر", lessonName: "WorkStation" },
+        { time: "7:00 PM", classroom: "Holl D4", teacher: "شادی", lessonName: "English" }
+      ]},
+      { day: "پێنج شەممە", lessons: [
+        { time: "3:00 AM", classroom: "Lab 5", teacher: "کاروان", lessonName: "Linux" },
+        { time: "4:00 AM", classroom: "Free", teacher: "Free", lessonName: "Free" },
+        { time: "5:00 AM", classroom: "Holl D4", teacher: "ڤانە", lessonName: "فیزیا" },
+        { time: "6:00 PM", classroom: "Holl D4", teacher: "شادی", lessonName: "English" },
+        { time: "7:00 PM", classroom: "Lab 5", teacher: "شەیما", lessonName: "HTML" }
+      ]}
+    ];
+
+    // Function to render the schedule
+    function renderSchedule() {
+      const scheduleElement = document.getElementById('schedule');
+
+      scheduleData.forEach(day => {
+        const daySchedule = `
+          <div class="col-lg-4 col-md
+          -6">
+            <div class="card mb-3 day-card">
+              <div class="card-body">
+                <h5>${day.day}</h5>
+                ${renderDayLessons(day.lessons)}
+              </div>
+            </div>
+          </div>
+        `;
+        scheduleElement.innerHTML += daySchedule;
+      });
+    }
+
+    // Function to render lessons for a day
+    function renderDayLessons(lessons) {
+      let lessonsHtml = '';
+      lessons.forEach(lesson => {
+        lessonsHtml += `
+          <div class="lesson">
+            <p><strong>Lesson:</strong> ${lesson.lessonName}</p>
+            <p><strong>Time:</strong> ${lesson.time}</p>
+            <p><strong>Classroom:</strong> ${lesson.classroom}</p>
+            <p><strong>Teacher:</strong> ${lesson.teacher}</p>
+          </div>
+        `;
+      });
+      return lessonsHtml;
+    }
+
+    // Call the function to render the schedule when the page loads
+    $(document).ready(function() {
+      renderSchedule();
+    });
+  </script>
+</body>
+</html>
